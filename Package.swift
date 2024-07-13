@@ -35,6 +35,10 @@ if let parserLibSearchPath = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_P
   swiftSyntaxParserLinkerSettings = []
 }
 
+let swiftSyntaxSearchPaths = [
+  SwiftSetting.unsafeFlags(["-I", "Toolchain"])
+]
+
 // Include the parser library as a binary dependency if both the host and the target are macOS.
 //  - We need to require that the host is macOS (checked by `#if os(macOS)`) because package resolve will download and unzip the referenced framework, which requires `unzip` to be installed. Only macOS guarantees that `unzip` is installed, the Swift Docker images don’t have unzip installed, so package resolve would fail.
 //  - We need to require that the target is macOS (checked by `.when`) because binary dependencies are only supported by SwiftPM on macOS.
@@ -106,6 +110,7 @@ let package = Package(
       exclude: [
         "NodeDeclarationHash.swift.gyb"
       ],
+      swiftSettings: swiftSyntaxSearchPaths,
       linkerSettings: swiftSyntaxParserLinkerSettings
     ),
     .target(
