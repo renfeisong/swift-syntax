@@ -35,8 +35,10 @@ if let parserLibSearchPath = ProcessInfo.processInfo.environment["SWIFT_SYNTAX_P
   swiftSyntaxParserLinkerSettings = []
 }
 
+let toolchainURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Toolchain")
+
 let swiftSyntaxSearchPaths = [
-  SwiftSetting.unsafeFlags(["-I", "Toolchain"])
+    SwiftSetting.unsafeFlags(["-I", toolchainURL.path])
 ]
 
 // Include the parser library as a binary dependency if both the host and the target are macOS.
